@@ -33,6 +33,20 @@ router.post("/auth/register", (req, res) => {
   });
 });
 
+router.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({ email }).then(user => {
+    bcrypt
+      .compare(password, user.password)
+      .then(valid => {
+        if (!valid)
+          return res.status(400).json({ error: "Password is incorrect" });
+        return res.status(200).json(user);
+      })
+      .catch(err => console.error(err));
+  });
+});
+
 router.post("/add/book", (req, res) => {
   const { errors, isValid } = bookValidate(req.body);
   if (!isValid) return res.status(401).json(errors);
