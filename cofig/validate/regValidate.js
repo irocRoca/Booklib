@@ -27,7 +27,7 @@ const registerValidate = data => {
   if (validator.isEmpty(password2)) {
     errors.password2 = "Field is required";
   } else if (!validator.equals(password, password2)) {
-    errors.password2 = "Passwords must match";
+    errors.password2 = "Passwords dont match";
   }
 
   return {
