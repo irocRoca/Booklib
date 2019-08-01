@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Paper,
   Grid,
   TextField,
-  makeStyles
+  makeStyles,
+  Button
 } from "@material-ui/core";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
@@ -16,6 +17,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddBook = () => {
+  const [book, setBook] = useState({
+    title: "",
+    author: "",
+    description: "",
+    bookCover: "",
+    publishedDate: ""
+  });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(book);
+  };
+  const handleChange = e => {
+    setBook({ ...book, [e.target.name]: e.target.value });
+  };
+  const handleFile = e => {
+    console.log(e.target.files[0]);
+  };
+
   const classes = useStyles();
   return (
     <div>
@@ -23,34 +43,56 @@ const AddBook = () => {
         <Paper className={classes.paper}>
           <Grid container spacing={2}>
             <Grid item sm={6} />
-            <Grid item sm={6}>
-              <TextField label="Title" name="title" placeholder="Enter Title" />
+            <form onSubmit={handleSubmit} noValidate>
+              <Grid item sm={6}>
+                <TextField
+                  label="Title"
+                  name="title"
+                  placeholder="Enter Title"
+                  onChange={handleChange}
+                  value={book.title}
+                />
 
-              <TextField
-                label="Author"
-                name="Author"
-                placeholder="Book Author"
-              />
+                <TextField
+                  label="Author"
+                  name="author"
+                  placeholder="Book Author"
+                  onChange={handleChange}
+                  value={book.author}
+                />
 
-              <Grid>
-                <TextareaAutosize
-                  label="description"
-                  name="description"
-                  placeholder="Short Description"
-                  rows={5}
+                <Grid>
+                  <TextareaAutosize
+                    label="description"
+                    name="description"
+                    placeholder="Short Description"
+                    rows={5}
+                    onChange={handleChange}
+                    value={book.description}
+                  />
+                </Grid>
+                <TextField
+                  label="bookCover"
+                  name="bookCover"
+                  type="file"
+                  onChange={handleFile}
+                  value={book.bookCover}
+                />
+                <TextField
+                  label="Published Date"
+                  name="publishedDate"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  onChange={handleChange}
+                  value={book.publishedDate}
                 />
               </Grid>
-              <TextField label="bookCover" name="bookCover" type="file" />
-              <TextField
-                label="Published Date"
-                name="published"
-                type="date"
-                defaultValue="2017-05-24"
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-            </Grid>
+              <Button color="primary" variant="contained" type="submit">
+                Submit
+              </Button>
+            </form>
           </Grid>
         </Paper>
       </Container>
