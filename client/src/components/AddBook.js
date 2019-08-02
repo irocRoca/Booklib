@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   Paper,
@@ -21,19 +22,23 @@ const AddBook = () => {
     title: "",
     author: "",
     description: "",
-    bookCover: "",
-    publishedDate: ""
+    bookCover: "qwert",
+    published: ""
   });
 
   const handleSubmit = e => {
     e.preventDefault();
     console.log(book);
+    axios
+      .post("/api/add/book", book)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err.response.data));
   };
+
   const handleChange = e => {
     setBook({ ...book, [e.target.name]: e.target.value });
-  };
-  const handleFile = e => {
-    console.log(e.target.files[0]);
   };
 
   const classes = useStyles();
@@ -71,16 +76,16 @@ const AddBook = () => {
                     value={book.description}
                   />
                 </Grid>
-                <TextField
+                {/* <TextField
                   label="bookCover"
                   name="bookCover"
                   type="file"
                   onChange={handleFile}
                   value={book.bookCover}
-                />
+                /> */}
                 <TextField
                   label="Published Date"
-                  name="publishedDate"
+                  name="published"
                   type="date"
                   InputLabelProps={{
                     shrink: true
