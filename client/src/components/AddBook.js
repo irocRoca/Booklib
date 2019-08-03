@@ -22,15 +22,18 @@ const AddBook = () => {
     title: "",
     author: "",
     description: "",
-    bookCover: "qwert",
+    bookCover: "",
     published: ""
   });
 
   const handleSubmit = e => {
     e.preventDefault();
     console.log(book);
+    // const newBook = new FormData();
     axios
-      .post("/api/add/book", book)
+      .post("/api/add/book", book, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
       .then(res => {
         console.log(res);
       })
@@ -76,13 +79,13 @@ const AddBook = () => {
                     value={book.description}
                   />
                 </Grid>
-                {/* <TextField
+                <TextField
                   label="bookCover"
                   name="bookCover"
                   type="file"
-                  onChange={handleFile}
+                  onChange={handleChange}
                   value={book.bookCover}
-                /> */}
+                />
                 <TextField
                   label="Published Date"
                   name="published"

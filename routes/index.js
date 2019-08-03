@@ -5,6 +5,8 @@ const regValidate = require("../cofig/validate/regValidate");
 const bookValidate = require("../cofig/validate/bookValidate");
 const User = require("../models/User");
 const Book = require("../models/Book");
+const multer = require("multer");
+const upload = multer({ dest: "uploads" });
 
 router.post("/auth/register", (req, res) => {
   const { errors, isValid } = regValidate(req.body);
@@ -60,7 +62,8 @@ router.post("/auth/login", (req, res) => {
   }); // include catch for findone fail;
 });
 
-router.post("/add/book", (req, res) => {
+router.post("/add/book", upload.single("bookCover"), (req, res) => {
+  console.log(req.file);
   const { errors, isValid } = bookValidate(req.body);
   if (!isValid) return res.status(401).json(errors);
   Book.findOne({ title: req.body.title })
